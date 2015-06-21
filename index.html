@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Developing Data Products Course Project</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Developing Data Products Course Project">
+  <meta name="author" content="Daniel Harcek">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Developing Data Products Course Project</h1>
+    <h2>What would be your chance to survive Titanic shipwreck</h2>
+    <p>Daniel Harcek<br/></p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <article data-timings="">
+    <!-- Slide 1 -->
+
+<h3>Developing Data products Course Project</h3>
+
+<h1>What would be your chance to survive Titanic shipwreck?</h1>
+
+<p>April 15, 1912, early morning.
+RMS Titanic collided with an iceberg during her maiden voyage from Southampton, UK, to New York City, US.
+<br />The largest ship afloat at the time sank. Only 722 out of 2224 passengers and crew survived. 
+<br /></p>
+
+<h2>What would your fate be?</h2>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <article data-timings="">
+    <!-- Slide 2 -->
+
+<p>Chance to survive is computed based on simple glm model trained on dataset used in a <a href="https://www.kaggle.com/c/titanic/data">Kaggle Titanic Competition</a>.
+<br />
+<br /></p>
+
+<pre><code>simple_model &lt;- glm(Survived ~ Pclass + Sex + Age, family = binomial(), data=titanic_data)
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <article data-timings="">
+    <!-- Slide 3 -->
+
+<h2>Survive or die?</h2>
+
+<p>Enter your age, sex and socioeconomic status (lower, middle, upper) and see your predicted survival probability.
+<br />
+<br /></p>
+
+<pre><code>output$prediction &lt;- renderText({
+    df_new &lt;- data.frame(Pclass=c(as.numeric(input$modelPclass)), Sex=c(input$modelSex), Age=c(as.numeric(input$modelAge)), stringsAsFactors=FALSE)
+    paste(&quot;Predicted survival probability is &quot;, predict(simple_model, df_new, type=&quot;response&quot;), &quot;%&quot;)
+  })
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <article data-timings="">
+    <!-- Slide 4 -->
+
+<p>In addition you can explore selected predictors against survivalship.
+<br />
+<br /></p>
+
+<pre><code>  output$survivalPlot &lt;- renderPlot({
+    if (is.null(input$Feature)) {
+      input$Feature &lt;- &quot;Age&quot;
+    }
+    ggplot(data=titanic_data, aes_string(x=input$Feature,colour=&quot;Survived&quot;))+geom_freqpoly()
+  })
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <article data-timings="">
+    <!-- Slide 5 -->
+
+<p>Try the app:  <a href="https://danielharcek.shinyapps.io/titanic_app">https://danielharcek.shinyapps.io/titanic_app</a>
+<br />
+Data credits: Kaggle</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='NA'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='NA'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='NA'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='NA'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='NA'>
+         5
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
